@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JFT/SSW Mock Exam - Login</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+  }
+  .login-box {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    width: 90%;
+    max-width: 380px;
+    text-align: center;
+  }
+  .login-box h2 {
+    color: #1e3c72;
+    margin-bottom: 5px;
+  }
+  .login-box p.sub {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 25px;
+  }
+  input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+  button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    background: #1e3c72;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  button:disabled {
+    background: #999;
+  }
+  #message {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #d32f2f;
+    min-height: 20px;
+  }
+  #loading {
+    display: none;
+    margin-top: 10px;
+    color: #1e3c72;
+    font-size: 14px;
+  }
+</style>
+</head>
+<body>
+
+<div class="login-box">
+  <h2>🎓 Mock Exam Login</h2>
+  <p class="sub">আপনার প্রদত্ত ID ও Password দিন</p>
+
+  <input type="text" id="studentId" placeholder="Student ID">
+  <input type="password" id="studentPassword" placeholder="Password">
+
+  <button id="loginBtn" onclick="attemptLogin()">Login</button>
+
+  <div id="loading">লোড হচ্ছে...</div>
+  <div id="message"></div>
+</div>
+
+<script>
+  // ==== এখানে তোমার Apps Script Web App URL বসানো আছে ====
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxPGoI7bVZOB6Eh09nPmyn9OQx1D3sYSp9M_qfD_niu9wPi6IjdiClRD2TqCkEt-99I/exec";
+
+  let failedAttempts = 0;
+  const MAX_ATTEMPTS = 3;
+
+  function attemptLogin() {
+    const id = document.getElementById('studentId').value.trim();
+    const password = document.getElementById('studentPassword').value.trim();
+    const messageEl = document.getElementById('message');
+    const loginBtn = document.getElementById('loginBtn');
+    const loading = document.getElementById('loading');
+
+    if (!id || !password) {
+      messageEl.textContent = "ID এবং Password দুটোই দিন।";
+      return;
+    }
+
+    if (failedAttempts >= MAX_ATTEMPTS) {
+      messageEl.textContent = "৩ বার ভুল দেওয়া হয়েছে। Login বন্ধ করা হয়েছে।";
+      loginBtn.disabled = true;
+      return;
+    }
+
+    loading.style.display = "block";
+    messageEl.textContent = "";
+    loginBtn.disabled = true;
+
+    fetch(SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify({
+        action: "login",
+        id: id,
+        password: password
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      loading.style.display = "none";
+      loginBtn.disabled = false;
+
+      if (data.success) {
+        // Login সফল - পরের পেজে (candidate info form) পাঠানো হবে
+        sessionStorage.setItem('studentId', id);
+        sessionStorage.setItem('rowIndex', data.rowIndex);
+        sessionStorage.setItem('category', data.category);
+        messageEl.style.color = "#2e7d32";
+        messageEl.textContent = "সফল! পরবর্তী পেজে যাচ্ছেন...";
+        // window.location.href = "candidate-info.html"; // পরের ধাপে বানাবো
+      } else {
+        failedAttempts++;
+        messageEl.style.color = "#d32f2f";
+        messageEl.textContent = data.message + " (চেষ্টা " + failedAttempts + "/" + MAX_ATTEMPTS + ")";
+        if (failedAttempts >= MAX_ATTEMPTS) {
+          loginBtn.disabled = true;
+          messageEl.textContent = "৩ বার ভুল দেওয়া হয়েছে। Login বন্ধ করা হয়েছে।";
+        }
+      }
+    })
+    .catch(err => {
+      loading.style.display = "none";
+      loginBtn.disabled = false;
+      messageEl.textContent = "সমস্যা হয়েছে, আবার চেষ্টা করুন।";
+      console.error(err);
+    });
+  }
+</script>
+
+</body>
+</html>
