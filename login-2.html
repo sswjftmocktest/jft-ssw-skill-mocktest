@@ -133,7 +133,9 @@
         sessionStorage.setItem('category', data.category);
         messageEl.style.color = "#2e7d32";
         messageEl.textContent = "সফল! পরবর্তী পেজে যাচ্ছেন...";
-        // window.location.href = "candidate-info.html"; // পরের ধাপে বানাবো
+        setTimeout(function(){
+        window.location.href = "candidate-info.html";
+      }, 1000);
       } else {
         failedAttempts++;
         messageEl.style.color = "#d32f2f";
