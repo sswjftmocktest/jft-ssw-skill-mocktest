@@ -422,7 +422,7 @@
 
         statusMsg.textContent = '✓ Login Successful — স্বাগতম, ' + id;
         statusMsg.classList.add('show','success');
-        // window.location.href = "candidate-form.html"; // পরের পেজে পাঠাতে আনকমেন্ট করুন
+        setTimeout(function(){ window.location.href = "candidate-form.html"; }, 1000);
       } else {
         statusMsg.textContent = data.message || 'আইডি অথবা পাসওয়ার্ড সঠিক নয়।';
         statusMsg.classList.add('show','error');
