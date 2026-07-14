@@ -285,13 +285,32 @@
 <div class="screen" id="screenLoading">
   <div class="loading-screen">
     <div class="loading-count" id="countNum">10</div>
-    <div class="loading-label">Exam Questions Upload হচ্ছে...</div>
+    <div class="loading-label" id="loadingLabel">তথ্য পাঠানো হচ্ছে...</div>
     <div class="loading-sub">অনুগ্রহ করে অপেক্ষা করুন, পেজ বন্ধ করবেন না</div>
     <div class="loading-bar-track"><div class="loading-bar-fill" id="loadBar"></div></div>
   </div>
 </div>
 
 <script>
+  // Apps Script Web App URL (same one used in login-2.html)
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw2cqK5IL5t71sZCe3-_Sdx0Jt6aqiLmxr39J9Cu_QDj82pyGZ4Z3aZTfCwXm8O9vyz/exec";
+
+  // Maps each category name (must match home-1.html card names exactly) to its exam file
+  const examFileMap = {
+    'JFT Basic': 'jft_mock_test.htm',
+    'Construction (Civil Engineering)': 'construction_civil_mock_test.htm',
+    'Construction (Building Construction)': 'construction_building_mock_test.htm',
+    'Construction (Lifeline / Equipment)': 'construction_lifeline_mock_test.htm',
+    'Agriculture (Crop Farming)': 'agriculture_crop_mock_test.htm',
+    'Agriculture (Livestock Farming)': 'agriculture_livestock_mock_test.htm',
+    'Nursing Care (Japanese)': 'nursing_japanese_mock_test.htm',
+    'Nursing Care (Bangla)': 'nursing_bangla_mock_test.htm',
+    'Accommodation / Hotel': 'accommodation_mock_test.htm',
+    'Automobile Maintenance': 'automobile_mock_test.htm',
+    'Aviation': 'aviation_mock_test.htm',
+    'Truck Driver': 'truck_driver_mock_test.htm'
+  };
+
   let capturedPhoto = null;
 
   // Populate Day (1-31) and Year (currentYear-15 down to currentYear-70) dropdowns
@@ -352,6 +371,7 @@
     const phone = document.getElementById('phone').value.trim();
     const consent = document.getElementById('consentBox').checked;
     const errBox = document.getElementById('formErr');
+    const startBtn = document.getElementById('startBtn');
 
     errBox.classList.remove('show');
 
@@ -386,7 +406,7 @@
       return;
     }
 
-    // Save candidate info for the exam page to use later
+    // Save candidate info locally too, for use on exam/result pages
     sessionStorage.setItem('candidateName', name);
     sessionStorage.setItem('candidateDOB', dob);
     sessionStorage.setItem('candidateCountry', country);
@@ -396,8 +416,46 @@
     // Switch to loading screen
     document.getElementById('screenForm').classList.remove('active');
     document.getElementById('screenLoading').classList.add('active');
+    startBtn.disabled = true;
 
-    startCountdown();
+    submitToServer(name, dob, country, phone);
+  }
+
+  function submitToServer(name, dob, country, phone){
+    const studentId = sessionStorage.getItem('studentId') || '';
+    const rowIndex = sessionStorage.getItem('rowIndex') || '';
+    const labelEl = document.getElementById('loadingLabel');
+
+    fetch(SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify({
+        action: "submitForm",
+        id: studentId,
+        rowIndex: rowIndex,
+        name: name,
+        dob: dob,
+        country: country,
+        phone: phone,
+        photoBase64: capturedPhoto
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if(data.success){
+        labelEl.textContent = 'তথ্য সফলভাবে সেভ হয়েছে। Exam Questions Upload হচ্ছে...';
+        if(data.photoUrl){
+          sessionStorage.setItem('candidatePhotoUrl', data.photoUrl);
+        }
+      } else {
+        labelEl.textContent = 'তথ্য সেভ করতে সমস্যা হয়েছে, তবে Exam চলবে।';
+      }
+      startCountdown();
+    })
+    .catch(err => {
+      console.error(err);
+      labelEl.textContent = 'সার্ভার সমস্যা হয়েছে, তবে Exam চলবে।';
+      startCountdown();
+    });
   }
 
   function startCountdown(){
@@ -413,8 +471,13 @@
 
       if(seconds <= 0){
         clearInterval(timer);
-        // Next step: exam.html (to be built) — carries category/session info forward
-        window.location.href = 'exam.html';
+        const category = sessionStorage.getItem('category') || '';
+        const examFile = examFileMap[category];
+        if(examFile){
+          window.location.href = examFile;
+        } else {
+          document.getElementById('screenLoading').innerHTML = '<div class="loading-screen"><div class="loading-label">এই ক্যাটাগরির Exam শীঘ্রই আসছে।</div><div class="loading-sub">অনুগ্রহ করে পরে আবার চেষ্টা করুন।</div></div>';
+        }
       }
     }, 1000);
   }
