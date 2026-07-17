@@ -1,820 +1,1162 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="bn">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>JFT Mock Test</title>
 <style>
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    font-family: "Segoe UI", "Hiragino Kaku Gothic ProN", Arial, sans-serif;
-    background: #eef0f2;
-    color: #1a1a1a;
+  :root{
+    --navy:#0f1b3d;
+    --navy2:#152451;
+    --orange:#f6a94a;
+    --orange-deep:#e08a1f;
+    --red:#e5323a;
+    --red-deep:#c11f27;
+    --blue:#2f6fed;
+    --blue-deep:#1f4fb0;
+    --green:#1fa24a;
+    --green-deep:#158238;
+    --purple:#6d3fc9;
+    --purple-deep:#4d2a96;
+    --optred:#fde3e3;--optred-b:#f2a4a4;
+    --optblue:#e1ecfd;--optblue-b:#a9c6f7;
+    --optgreen:#e1f7e6;--optgreen-b:#a7dcb4;
+    --optyellow:#fdf3d8;--optyellow-b:#eccf7d;
   }
-  .screen { display: none; min-height: 100vh; }
-  .screen.active { display: block; }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;padding:0;height:100%;
+    font-family:'Segoe UI', 'Hind Siliguri', Arial, sans-serif;
+    background:#eef0f4;
+    -webkit-user-select:none;-moz-user-select:none;user-select:none;
+  }
+  img{-webkit-user-drag:none;user-select:none;pointer-events:none;}
+  body{-webkit-touch-callout:none;}
 
-  /* ---------- LOGIN SCREEN ---------- */
-  #login-screen {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-height: 100vh;
-    background: #eef0f2;
-  }
-  .login-header {
-    width: 100%;
-    background: #14183a;
-    color: #fff;
-    text-align: center;
-    padding: 22px 10px;
-    font-size: 22px;
-    font-weight: 500;
-    letter-spacing: 1px;
-  }
-  .login-box {
-    background: #fff;
-    border-radius: 8px;
-    padding: 35px 40px;
-    width: 380px;
-    max-width: 90%;
-    margin-top: 60px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  }
-  .login-box label {
-    display: block;
-    font-size: 15px;
-    margin-bottom: 6px;
-    margin-top: 18px;
-    color: #222;
-  }
-  .login-box input {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #999;
-    border-radius: 5px;
-    font-size: 15px;
-  }
-  .hint-red {
-    color: #d9302f;
-    font-size: 12px;
-    margin-top: 4px;
-  }
-  .cf-badge {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    background: #f7f7f7;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 12px;
-    margin: 24px 0;
-  }
-  .cf-check {
-    width: 26px;
-    height: 26px;
-    background: #16a34a;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-weight: bold;
-    flex-shrink: 0;
-  }
-  .cf-text { font-size: 14px; color: #333; }
-  .cf-brand { font-size: 12px; color: #888; margin-left: auto; text-align: right; }
-  .login-btn {
-    width: 100%;
-    background: #14183a;
-    color: #fff;
-    border: none;
-    padding: 13px;
-    border-radius: 6px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  .login-btn:hover { background: #23285c; }
-  .error-box {
-    display: none;
-    background: #fdecea;
-    border: 1px solid #d9302f;
-    color: #d9302f;
-    padding: 12px;
-    border-radius: 6px;
-    font-size: 14px;
-    margin-top: 16px;
-    line-height: 1.5;
-  }
+  .app{display:flex;flex-direction:column;height:100vh;}
 
-  /* ---------- COUNTDOWN SCREEN ---------- */
-  #countdown-screen {
-    display: none;
-    min-height: 100vh;
-    background: #14183a;
-    color: #fff;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+  header{
+    background:var(--navy);color:#fff;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:10px 18px;flex-wrap:wrap;gap:8px;
   }
-  #countdown-screen.active { display: flex; }
-  .countdown-number {
-    font-size: 90px;
-    font-weight: 700;
-    margin-bottom: 20px;
+  .brand{display:flex;align-items:center;gap:10px;}
+  .brand .logo{
+    width:40px;height:40px;border-radius:10px;
+    background:linear-gradient(135deg,#2a3d78,#0f1b3d);
+    display:flex;align-items:center;justify-content:center;
+    font-size:20px;border:2px solid #3a5088;
   }
-  .countdown-msg {
-    font-size: 18px;
-    color: #cfd3ef;
+  .brand-text .title{font-weight:800;font-size:16px;letter-spacing:.5px;}
+  .brand-text .sub{font-size:11px;opacity:.75;}
+  .timer-box{text-align:center;}
+  .timer-label{font-size:11px;opacity:.8;}
+  .timer-value{font-size:20px;font-weight:800;color:#ffd23f;letter-spacing:1px;}
+  .cand-box{text-align:right;font-size:12px;}
+  .cand-box .id{font-weight:700;font-size:14px;}
+  .finish-btn{
+    background:var(--red);color:#fff;border:none;
+    padding:10px 16px;border-radius:8px;font-weight:700;
+    font-size:13px;display:flex;align-items:center;gap:6px;cursor:pointer;
   }
+  .finish-btn:active{background:var(--red-deep);}
 
-  /* ---------- EXAM SCREEN ---------- */
-  #exam-screen { background: #fff; }
-  .top-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #000;
-    color: #fff;
-    padding: 10px 20px;
-    flex-wrap: wrap;
-    gap: 10px;
+  .body-wrap{flex:1;display:flex;overflow:hidden;}
+
+  .sidebar{
+    width:110px;background:#fff;border-right:1px solid #e2e5ec;
+    display:flex;flex-direction:column;padding:12px 8px;
+    overflow-y:auto;
   }
-  .top-left { font-size: 14px; line-height: 1.5; }
-  .top-left b { font-size: 15px; }
-  .top-center {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
+  .qgrid{display:flex;gap:6px;}
+  .qnums{flex:1;display:flex;flex-direction:column;gap:6px;}
+  .qnum{
+    height:34px;border:2px solid var(--orange);border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:14px;color:#333;background:#fff;
+    cursor:pointer;transition:.2s;
   }
-  .top-center .timer-val { font-weight: bold; font-size: 16px; }
-  .finish-btn {
-    background: #f2c14e;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 4px;
-    font-weight: 600;
-    cursor: pointer;
-    font-size: 14px;
+  .qnum.current{background:var(--orange);color:#fff;}
+  .qnum.answered{background:var(--red);border-color:var(--red-deep);color:#fff;}
+  .qnum.answered.current{background:var(--red-deep);}
+
+  #qnums.sec-color-vocab .qnum{border-color:var(--red);}
+  #qnums.sec-color-vocab .qnum.current{background:var(--red);border-color:var(--red);}
+  #qnums.sec-color-vocab .qnum.answered{background:var(--red-deep);border-color:var(--red-deep);}
+  #qnums.sec-color-vocab .qnum.answered.current{background:var(--red-deep);}
+
+  #qnums.sec-color-conv .qnum{border-color:var(--blue);}
+  #qnums.sec-color-conv .qnum.current{background:var(--blue);border-color:var(--blue);}
+  #qnums.sec-color-conv .qnum.answered{background:var(--blue-deep);border-color:var(--blue-deep);}
+  #qnums.sec-color-conv .qnum.answered.current{background:var(--blue-deep);}
+
+  #qnums.sec-color-listen .qnum{border-color:var(--green);}
+  #qnums.sec-color-listen .qnum.current{background:var(--green);border-color:var(--green);}
+  #qnums.sec-color-listen .qnum.answered{background:var(--green-deep);border-color:var(--green-deep);}
+  #qnums.sec-color-listen .qnum.answered.current{background:var(--green-deep);}
+
+  #qnums.sec-color-read .qnum{border-color:var(--purple);}
+  #qnums.sec-color-read .qnum.current{background:var(--purple);border-color:var(--purple);}
+  #qnums.sec-color-read .qnum.answered{background:var(--purple-deep);border-color:var(--purple-deep);}
+  #qnums.sec-color-read .qnum.answered.current{background:var(--purple-deep);}
+  .progress-track{
+    width:10px;border-radius:6px;background:#f1d9d9;
+    position:relative;overflow:hidden;
   }
-  .test-bar {
-    display: flex;
-    justify-content: space-between;
-    background: #4c6b1f;
-    color: #fff;
-    padding: 6px 20px;
-    font-size: 13px;
+  .progress-fill{
+    position:absolute;bottom:0;left:0;width:100%;
+    background:var(--red);height:0%;transition:height .3s;
   }
-  .exam-body { display: flex; }
-  .sidebar {
-    width: 90px;
-    background: #fff;
-    border-right: 2px solid #4c6b1f;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 8px;
+  .sections{margin-top:14px;display:flex;flex-direction:column;gap:6px;}
+  .sec-btn{
+    border:none;border-radius:8px;color:#fff;font-weight:700;font-size:11px;
+    padding:10px 6px;text-align:left;cursor:pointer;line-height:1.2;
+    opacity:.55;
   }
-  .side-tab {
-    font-size: 11px;
-    color: #333;
-    padding: 6px 0;
-    writing-mode: horizontal-tb;
+  .sec-btn.active{opacity:1;box-shadow:0 0 0 2px #ffffffaa inset;}
+  .sec-vocab{background:var(--red);}
+  .sec-conv{background:var(--blue);}
+  .sec-listen{background:var(--green);}
+  .sec-read{background:var(--purple);}
+
+  main{flex:1;padding:20px 24px;overflow-y:auto;display:flex;flex-direction:column;}
+  .qhead{display:flex;align-items:flex-start;gap:14px;margin-bottom:14px;}
+  .qbadge{
+    background:var(--navy);color:#fff;font-weight:800;font-size:16px;
+    width:34px;height:34px;border-radius:8px;display:flex;
+    align-items:center;justify-content:center;flex-shrink:0;
   }
-  .side-tab-block {
-    width: 12px;
-    background: #ddd;
-    border-radius: 4px;
-    margin-bottom: 10px;
+  .instruction{font-size:16px;font-weight:600;color:#1b1b1b;padding-top:4px;}
+  .lang-row{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+  .lang-btn{
+    background:var(--navy);color:#fff;border:none;border-radius:8px;
+    padding:9px 14px;font-size:13px;font-weight:700;cursor:pointer;
+    display:flex;align-items:center;gap:6px;
   }
-  .side-tab-block.active-section { background: #4c6b1f; height: 90px; }
-  .side-tab-block.inactive-section { background: #ccc; height: 50px; }
-  .q-num-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
-  .q-num {
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    font-weight: 600;
-    color: #fff;
-    border-radius: 3px;
-    cursor: pointer;
-    position: relative;
+  .lang-btn.on{background:var(--orange-deep);}
+  .translation-box{
+    background:#fff7e6;border:1px solid var(--orange);border-radius:8px;
+    padding:10px 14px;font-size:14px;margin-bottom:16px;display:none;color:#3a2e0a;
   }
-  .q-num.unanswered { background: #fff; color: #4c6b1f; border: 2px solid #4c6b1f; }
-  .q-num.current { background: #4c6b1f; color: #fff; }
-  .q-num.answered { background: #9a9a9a; color: #fff; }
-  .q-num.flagged::after {
-    content: "";
-    position: absolute;
-    top: -4px; right: -4px;
-    width: 10px; height: 10px;
-    background: #d9302f;
-    clip-path: polygon(0 0, 100% 20%, 0 40%);
+  .translation-box.show{display:block;}
+
+  .content-area{margin-bottom:20px;}
+  .sentence-box{
+    background:var(--optblue);border:1px solid var(--optblue-b);
+    border-radius:8px;padding:20px 22px;font-size:26px;line-height:1.6;
+    margin-bottom:6px;
+  }
+  .illustration-wrap{
+    display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin-bottom:6px;
+  }
+  .illustration-box{
+    width:220px;height:180px;border:1px solid #ddd;border-radius:10px;
+    background:#fafafa;display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;margin-bottom:14px;
+  }
+  .illustration-box svg{width:70%;height:70%;}
+  .emoji-icon{font-size:90px;line-height:1;filter:drop-shadow(0 3px 6px rgba(0,0,0,.15));}
+
+  .dialog-wrap{background:var(--optblue);border:1px solid var(--optblue-b);border-radius:8px;padding:18px 20px;margin-bottom:20px;max-width:680px;}
+  .dialog-line{display:flex;gap:10px;align-items:flex-start;margin-bottom:14px;font-size:19px;line-height:1.5;}
+  .dialog-line:last-child{margin-bottom:0;}
+  .speaker{font-weight:800;color:var(--navy);flex-shrink:0;min-width:56px;}
+  .blank-box{
+    display:inline-block;min-width:130px;border:2px solid var(--red);
+    border-radius:6px;background:#fff;padding:4px 10px;margin:0 3px;
+    text-align:center;color:#bbb;font-size:16px;
   }
 
-  .main-area { flex: 1; padding: 0; display: flex; flex-direction: column; }
-  .instruction-bar {
-    background: #dce8f5;
-    padding: 14px 20px;
-    font-size: 16px;
+  .audio-wrap{display:flex;flex-direction:column;align-items:center;gap:10px;margin:20px 0 30px;}
+  .audio-btn{
+    width:84px;height:84px;border-radius:50%;border:none;
+    background:var(--green);color:#fff;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 4px 14px rgba(31,162,74,.4);
   }
-  .question-content { padding: 20px; flex: 1; }
-  .lang-buttons { display: flex; gap: 10px; margin-bottom: 16px; }
-  .lang-btn {
-    background: #fff;
-    border: 1px solid #999;
-    border-radius: 4px;
-    padding: 7px 14px;
-    font-size: 13px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .lang-btn:hover { background: #f0f0f0; }
-  .lang-btn.disabled { opacity: 0.5; cursor: not-allowed; }
-  .translation-box {
-    display: none;
-    background: #fff8e1;
-    border: 1px solid #e8c468;
-    border-radius: 5px;
-    padding: 12px 16px;
-    margin-bottom: 16px;
-    font-size: 15px;
-    color: #5a4a10;
-  }
-  .illustration-wrap {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-  .illustration-wrap svg { max-width: 320px; }
-  .options { display: flex; flex-direction: column; gap: 12px; max-width: 600px; margin: 0 auto; }
-  .option {
-    border: 2px solid #333;
-    border-radius: 4px;
-    padding: 12px 16px;
-    font-size: 20px;
-    cursor: pointer;
-    background: #fff;
-    display: flex;
-    gap: 10px;
-  }
-  .option:hover { background: #f5f5f5; }
-  .option.selected { background: #d9e8d1; border-color: #4c6b1f; }
-  .fill-sentence { font-size: 26px; margin-top: 6px; }
+  .audio-btn:active{transform:scale(.94);}
+  .audio-btn.playing{background:var(--green-deep);animation:pulse 1s infinite;}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(31,162,74,.5);}70%{box-shadow:0 0 0 16px rgba(31,162,74,0);}100%{box-shadow:0 0 0 0 rgba(31,162,74,0);}}
+  .audio-hint{font-size:13px;color:#666;}
+  .audio-count{font-size:13px;color:#999;}
 
-  .bottom-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: #000;
-    padding: 10px 20px;
-  }
-  .bottom-left { display: flex; gap: 12px; color: #fff; font-size: 20px; }
-  .bottom-right { display: flex; gap: 10px; }
-  .nav-btn {
-    background: #4c6b1f;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 14px;
-  }
-  .nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-  .flag-btn {
-    background: #4c6b1f;
-    color: #fff;
-    border: none;
-    padding: 10px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  .flag-btn.flag-active { background: #d9302f; }
+  .reading-wrap{display:flex;gap:22px;flex-wrap:wrap;margin-bottom:18px;}
+  .passage-col{flex:1 1 340px;max-width:420px;}
+  .question-col{flex:1 1 320px;}
 
-  /* ---------- RESULT SCREEN ---------- */
-  #result-screen {
-    display: none;
-    min-height: 100vh;
-    background: #fff;
-    padding: 40px 20px;
+  .passage-box{background:#fff;border:1px solid #ddd;border-radius:10px;padding:16px 18px;font-size:15px;line-height:1.7;color:#222;}
+  .flyer-title{font-size:18px;font-weight:800;color:var(--navy);margin:0 0 10px;}
+  .flyer-orange{border:2px solid var(--orange);background:#fffaf0;}
+  .flyer-pink{border:2px solid #e88ec2;background:#fff5fb;}
+  .flyer-teal{border:2px solid #35b7ad;background:#f1fdfc;}
+  .flyer-blue{border:2px solid var(--blue);background:#f2f6ff;}
+  .passage-box p{margin:0 0 8px;}
+  .passage-box hr{border:none;border-top:1px solid #e2e2e2;margin:8px 0;}
+
+  .remote-mini{display:flex;flex-direction:column;gap:8px;margin-top:10px;max-width:220px;}
+  .remote-btn{background:#f4f4f4;border:1px solid #ccc;border-radius:8px;padding:8px 12px;font-size:15px;display:flex;gap:8px;align-items:center;}
+  .remote-btn b{background:var(--navy);color:#fff;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;}
+
+  .sns-header{font-weight:700;color:var(--navy);margin-bottom:6px;}
+
+  .med-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px;}
+  .med-table th,.med-table td{border:1px solid #ccc;padding:6px 8px;text-align:center;}
+  .med-table th{background:var(--navy);color:#fff;font-weight:700;}
+  .med-table td:first-child{text-align:left;}
+
+  .q-block{background:#fdf3d8;border-radius:8px;padding:10px 14px;font-size:16px;font-weight:700;color:#3a2e0a;margin-bottom:10px;}
+
+  .options{display:flex;flex-direction:column;gap:12px;max-width:640px;}
+  .opt{
+    display:flex;align-items:center;gap:14px;
+    border-radius:10px;padding:16px 18px;font-size:20px;cursor:pointer;
+    border:2px solid transparent;transition:.15s;
   }
-  #result-screen.active { display: block; }
-  .result-container {
-    max-width: 750px;
-    margin: 0 auto;
-    background: #fff;
+  .opt .dot{
+    width:20px;height:20px;border-radius:50%;border:2px solid #999;
+    background:#fff;flex-shrink:0;
   }
-  .result-row {
-    display: flex;
-    gap: 20px;
-    margin-bottom: 20px;
+  .opt.o0{background:var(--optred);border-color:var(--optred-b);}
+  .opt.o1{background:var(--optblue);border-color:var(--optblue-b);}
+  .opt.o2{background:var(--optgreen);border-color:var(--optgreen-b);}
+  .opt.o3{background:var(--optyellow);border-color:var(--optyellow-b);}
+  .opt.selected{border-color:var(--navy);box-shadow:0 0 0 2px var(--navy) inset;}
+  .opt.selected .dot{background:var(--navy);border-color:var(--navy);}
+
+  .nav-row{
+    margin-top:auto;display:flex;justify-content:space-between;
+    padding-top:16px;
   }
-  .result-info table { border-collapse: collapse; }
-  .result-info td { padding: 6px 10px; font-size: 15px; vertical-align: top; }
-  .result-info .label-jp { font-weight: 600; }
-  .result-info .label-en { font-size: 11px; color: #666; display:block; }
-  .result-msg { margin: 20px 0; font-size: 15px; line-height: 1.6; }
-  .score-block {
-    background: #f8f8f8;
-    border-radius: 8px;
-    padding: 20px;
-    margin: 20px 0;
+  .nav-btn{
+    background:var(--navy);color:#fff;border:none;border-radius:8px;
+    padding:12px 22px;font-size:15px;font-weight:700;cursor:pointer;
+    display:flex;align-items:center;gap:6px;
   }
-  .score-title { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
-  .score-sub { font-size: 13px; color: #555; margin-bottom: 14px; }
-  .score-bar-wrap { position: relative; height: 40px; margin: 30px 0 10px; }
-  .score-bar-track {
-    height: 8px;
-    background: linear-gradient(to right, #e05a2b, #f2c14e, #6ab04c);
-    border-radius: 4px;
-    position: relative;
-    top: 16px;
+  .nav-btn:disabled{opacity:.4;}
+
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(10,15,30,.75);
+    display:none;align-items:center;justify-content:center;z-index:50;
   }
-  .score-bar-labels { display: flex; justify-content: space-between; font-size: 12px; color: #555; margin-top: 4px; }
-  .score-dot {
-    position: absolute;
-    top: 6px;
-    width: 20px;
-    height: 20px;
-    background: #f2c14e;
-    border: 3px solid #fff;
-    border-radius: 50%;
-    box-shadow: 0 0 0 1px #ccc;
-    transform: translateX(-50%);
+  .modal-overlay.show{display:flex;}
+  .modal-box{
+    background:#fff;border-radius:14px;padding:30px 26px;text-align:center;
+    max-width:340px;width:90%;
   }
-  .score-dot-val {
-    position: absolute;
-    top: -18px;
-    font-size: 13px;
-    font-weight: 700;
-    transform: translateX(-50%);
+  .modal-box h2{margin:0 0 10px;color:var(--navy);font-size:20px;}
+  .modal-box p{color:#444;font-size:14px;margin:0 0 18px;}
+  .countdown-num{font-size:48px;font-weight:800;color:var(--red);margin:10px 0;}
+  .modal-actions{display:flex;gap:10px;justify-content:center;}
+  .modal-btn{
+    border:none;border-radius:8px;padding:10px 18px;font-weight:700;
+    cursor:pointer;font-size:14px;
   }
-  .pass-mark-line {
-    position: absolute;
-    top: 10px;
-    width: 2px;
-    height: 20px;
-    background: #333;
-    transform: translateX(-50%);
+  .modal-btn.confirm{background:var(--red);color:#fff;}
+  .modal-btn.cancel{background:#e5e7eb;color:#333;}
+
+  .result-box{
+    background:#fff;border-radius:14px;padding:30px;max-width:420px;width:90%;text-align:center;
   }
-  .verdict-badge {
-    display: inline-block;
-    padding: 6px 16px;
-    border-radius: 20px;
-    font-weight: 700;
-    font-size: 15px;
-    margin: 10px 0 20px;
+  .result-box .score{font-size:44px;font-weight:800;color:var(--navy);}
+  .result-box .pass{color:var(--green);font-weight:800;font-size:18px;margin-top:6px;}
+  .result-box .fail{color:var(--red);font-weight:800;font-size:18px;margin-top:6px;}
+  .section-scores{margin-top:18px;text-align:left;font-size:13px;color:#333;display:flex;flex-direction:column;gap:6px;}
+  .section-scores div{display:flex;justify-content:space-between;border-bottom:1px solid #eee;padding-bottom:4px;}
+
+  @media (max-width:760px){
+    .sidebar{width:78px;padding:8px 5px;}
+    .qnum{height:28px;font-size:12px;border-width:2px;}
+    .sec-btn{font-size:9px;padding:6px 4px;}
+    main{padding:14px;}
+    .instruction{font-size:14px;}
+    .sentence-box{font-size:19px;padding:14px;}
+    .dialog-line{font-size:16px;}
+    .blank-box{min-width:90px;font-size:13px;}
+    .passage-box{font-size:13px;}
+    .opt{font-size:15px;padding:12px 14px;}
+    .illustration-box{width:130px;height:110px;}
+    .emoji-icon{font-size:56px;}
+    header{padding:8px 10px;flex-wrap:wrap;}
+    .brand-text .title{font-size:13px;}
+    .brand .logo{width:32px;height:32px;font-size:15px;}
+    .timer-value{font-size:15px;}
+    .timer-label{font-size:9px;}
+    .cand-box{font-size:9px;}
+    .cand-box .id{font-size:11px;}
+    .finish-btn{padding:7px 9px;font-size:10px;}
+    .qhead{gap:8px;}
+    .qbadge{width:28px;height:28px;font-size:13px;}
+    .lang-btn{font-size:11px;padding:7px 10px;}
+    .reading-wrap{flex-direction:column;}
   }
-  .verdict-pass { background: #d9f2d9; color: #1c7a1c; }
-  .verdict-fail { background: #fbdada; color: #b02a2a;}
-  .section-row { margin-bottom: 16px; }
-  .section-title { font-size: 14px; margin-bottom: 4px; }
-  .section-bar-track {
-    position: relative;
-    height: 8px;
-    background: linear-gradient(to right, #e05a2b, #f2c14e, #6ab04c);
-    border-radius: 4px;
+  @media (max-width:400px){
+    .sidebar{width:66px;}
+    .qnum{height:24px;font-size:11px;}
+    .sec-btn{font-size:8px;}
   }
-  .section-dot {
-    position: absolute;
-    top: -6px;
-    width: 18px; height: 18px;
-    background: #f2c14e;
-    border: 2px solid #fff;
-    box-shadow: 0 0 0 1px #ccc;
-    border-radius: 50%;
-    transform: translateX(-50%);
+
+  /* ================= START SCREEN ================= */
+  .start-screen{
+    position:fixed;inset:0;z-index:100;
+    background:linear-gradient(135deg,#fff3df,#ffe3c2);
+    display:flex;align-items:center;justify-content:center;
+    padding:20px;overflow-y:auto;
   }
-  .section-pct { font-size: 12px; text-align: right; margin-bottom: 2px; }
-  .retry-btn {
-    margin-top: 20px;
-    background: #14183a;
-    color: #fff;
-    border: none;
-    padding: 12px 26px;
-    border-radius: 6px;
-    font-size: 15px;
-    cursor: pointer;
+  .start-card{
+    background:#fff;border-radius:16px;padding:30px 26px;max-width:440px;width:100%;
+    box-shadow:0 12px 30px rgba(15,27,61,.15);text-align:center;
   }
+  .start-logo{font-size:40px;margin-bottom:6px;}
+  .start-card h1{margin:0 0 4px;color:var(--navy);font-size:22px;letter-spacing:.5px;}
+  .start-sub{font-size:13px;color:#777;margin:0 0 20px;}
+  .photo-upload{margin-bottom:18px;}
+  .photo-preview{
+    width:96px;height:96px;border-radius:50%;border:2px dashed var(--orange);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    margin:0 auto;cursor:pointer;font-size:26px;color:#b98a3f;overflow:hidden;background:#fff8ee;
+  }
+  .photo-preview span{font-size:10px;margin-top:2px;}
+  .photo-preview img{width:100%;height:100%;object-fit:cover;}
+  .photo-caption-jp{font-size:13px;font-weight:700;color:#333;margin-bottom:8px;}
+  .field-label{display:flex;flex-direction:column;gap:1px;margin-bottom:2px;}
+  .field-label .jp{font-size:14px;font-weight:800;color:#222;}
+  .field-label .bn{font-size:11px;font-weight:600;color:#777;}
+  .form-grid{display:flex;flex-direction:column;gap:12px;text-align:left;margin-bottom:20px;}
+  .form-grid label{font-size:12px;font-weight:700;color:#333;display:flex;flex-direction:column;gap:4px;}
+  .form-grid input, .form-grid select{
+    font-size:14px;padding:10px 12px;border-radius:8px;border:1px solid #ccc;font-family:inherit;
+  }
+  .dob-row{display:flex;gap:6px;}
+  .dob-row select{flex:1;font-size:13px;padding:9px 4px;border-radius:8px;border:1px solid #ccc;font-family:inherit;}
+  .date-box{flex:1;border:1px solid #ccc;border-radius:8px;padding:6px 8px 4px;display:flex;flex-direction:column;gap:2px;background:#fff;}
+  .date-box-label{font-size:10px;font-weight:700;color:#777;}
+  .date-box select{border:none;padding:2px 0;border-radius:0;font-size:14px;width:100%;background:transparent;}
+  .start-btn{
+    width:100%;background:var(--navy);color:#fff;border:none;border-radius:10px;
+    padding:12px;font-size:15px;font-weight:800;cursor:pointer;
+    display:flex;flex-direction:column;align-items:center;gap:2px;
+  }
+  .start-btn .jp{font-size:15px;}
+  .start-btn .bn{font-size:12px;opacity:.85;font-weight:600;}
+  .start-btn:active{background:var(--navy2);}
+
+  /* ================= RESULT PAGE ================= */
+  .result-page{
+    position:fixed;inset:0;z-index:80;display:none;flex-direction:column;overflow-y:auto;
+    background-color:#fff6ea;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='170'><text x='0' y='100' transform='rotate(-24 120 85)' font-size='19' font-family='Arial, sans-serif' fill='%23000000' fill-opacity='0.05'>JFT MOCK TEST</text></svg>");
+    background-repeat:repeat;
+  }
+  .result-page.show{display:flex;}
+  .result-header{
+    background:linear-gradient(135deg,#ffb15e,#ff9d3d);
+    padding:18px 22px;display:flex;align-items:center;justify-content:space-between;
+    flex-wrap:wrap;gap:12px;
+  }
+  .result-title{font-size:22px;font-weight:900;color:#fff;letter-spacing:.5px;}
+  .result-sub{font-size:12px;color:#fff;opacity:.85;}
+  .practice-banner{
+    background:#fff3e0;color:#8a4b00;border-radius:10px;padding:10px 16px;
+    font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;
+  }
+  .result-actions{display:flex;gap:10px;}
+  .raction-btn{
+    border:none;border-radius:8px;color:#fff;font-weight:700;font-size:12px;
+    padding:10px 14px;cursor:pointer;display:flex;align-items:center;gap:6px;
+  }
+  .print-btn{background:var(--green);}
+  .pdf-btn{background:var(--orange-deep);}
+  .exit-btn{background:var(--red);}
+
+  .result-body{padding:22px;display:flex;flex-direction:column;gap:18px;max-width:1100px;margin:0 auto;width:100%;}
+  .rcard{
+    background:rgba(255,255,255,.72);border-radius:14px;padding:20px 22px;
+    box-shadow:0 4px 14px rgba(15,27,61,.06);
+  }
+  .rcard h3{margin:0 0 14px;color:var(--navy);font-size:16px;}
+
+  .result-grid-top{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .cand-row{display:flex;gap:18px;align-items:flex-start;}
+  .cand-photo{width:90px;height:110px;border-radius:8px;overflow:hidden;background:#eee;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:34px;color:#999;}
+  .cand-photo img{width:100%;height:100%;object-fit:cover;}
+  .cand-fields{flex:1;display:flex;flex-direction:column;gap:6px;font-size:13px;}
+  .cfield{display:flex;gap:6px;}
+  .cfield b{min-width:130px;color:#333;}
+  .cfield span{color:#555;}
+
+  .overall-inner{display:flex;justify-content:space-around;text-align:center;margin-bottom:16px;}
+  .overall-label{font-size:12px;color:#777;margin-bottom:4px;}
+  .overall-score{font-size:34px;font-weight:900;color:var(--orange-deep);}
+  .overall-score span{font-size:16px;color:#999;}
+  #passFailDisplay .pass{color:var(--green);font-weight:900;font-size:20px;}
+  #passFailDisplay .fail{color:var(--red);font-weight:900;font-size:20px;}
+
+  .gauge-wrap{margin-top:6px;}
+  .gauge-caption{font-size:12px;color:#777;text-align:center;margin-bottom:8px;}
+  .gauge-track{
+    position:relative;height:12px;border-radius:8px;
+    background:linear-gradient(90deg,#e5323a,#f6a94a,#ffe066,#4caf50);
+    margin:20px 4px 6px;
+  }
+  .gauge-marker{
+    position:absolute;top:50%;transform:translate(-50%,-50%);
+    width:22px;height:22px;border-radius:50%;background:#fff;border:4px solid var(--navy);
+  }
+  .gauge-marker span{
+    position:absolute;top:-26px;left:50%;transform:translateX(-50%);
+    font-size:13px;font-weight:800;color:var(--navy);white-space:nowrap;
+  }
+  .gauge-ticks{display:flex;justify-content:space-between;font-size:11px;color:#888;padding:0 2px;}
+  .gauge-pass-label{text-align:center;font-size:12px;color:#777;margin-top:8px;}
+
+  .section-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .sec-score-card{
+    background:#fff;border-radius:10px;padding:16px 12px;text-align:center;
+    box-shadow:0 2px 8px rgba(0,0,0,.05);
+  }
+  .sec-icon{font-size:22px;margin-bottom:6px;}
+  .sec-label{font-size:12px;font-weight:700;color:#333;margin-bottom:10px;min-height:30px;}
+  .sec-bar{height:8px;border-radius:6px;background:#eee;overflow:hidden;margin-bottom:8px;}
+  .sec-bar-fill{height:100%;background:linear-gradient(90deg,#e5323a,#f6a94a,#4caf50);}
+  .sec-pct{font-size:20px;font-weight:900;color:var(--green-deep);}
+  .sec-frac{font-size:11px;color:#888;}
+  .sec-blue .sec-icon{color:var(--blue);}
+  .sec-purple .sec-icon{color:var(--purple);}
+  .sec-green .sec-icon{color:var(--green);}
+  .sec-red .sec-icon{color:var(--red);}
+
+  .perf-card p{font-size:14px;line-height:1.7;color:#333;margin:0 0 10px;}
+  .result-disclaimer{color:var(--red)!important;font-size:12px!important;margin-top:12px!important;}
+
+  @media (max-width:760px){
+    .result-grid-top{grid-template-columns:1fr;}
+    .section-grid{grid-template-columns:repeat(2,1fr);}
+    .result-header{flex-direction:column;align-items:flex-start;}
+  }
+  @media print{
+    .start-screen,.modal-overlay,.result-actions{display:none!important;}
+    .result-page{position:static;background-image:none;}
+  }
+  .screen-blur{filter:blur(18px) brightness(.5);transition:filter .15s;}
+  .focus-warning{
+    position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;
+    background:rgba(15,27,61,.9);color:#fff;text-align:center;font-size:16px;font-weight:700;padding:20px;
+  }
+  .focus-warning.show{display:flex;}
 </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
-<!-- ================= LOGIN SCREEN ================= -->
-<div id="login-screen" class="screen active">
-  <div class="login-header">JFT Mock Test</div>
-  <div class="login-box">
-    <label>ID Number</label>
-    <input type="text" id="id-input" placeholder="例：JP9900001">
-    <div class="hint-red">※Half-width letters and numbers</div>
+<div class="focus-warning" id="focusWarning">⚠️<br>Test চলাকালীন অন্য অ্যাপে যাওয়া বা স্ক্রিন রেকর্ড করা যাবে না।<br>ফিরে আসতে স্ক্রিনে ট্যাপ করো।</div>
 
-    <label>Password</label>
-    <input type="password" id="pw-input">
-    <div class="hint-red">※Half-width letters and numbers</div>
-
-    <div class="cf-badge">
-      <div class="cf-check">&#10003;</div>
-      <div class="cf-text">成功しました！</div>
-      <div class="cf-brand">CLOUDFLARE<br>プライバシー保証済み</div>
+<div class="start-screen" id="startScreen">
+  <div class="start-card">
+    <div class="start-logo" id="loadingLogo">⏳</div>
+    <h1>JFT MOCK TEST</h1>
+    <p class="start-sub" id="loadingMsg">প্রশ্ন লোড হচ্ছে, একটু অপেক্ষা করো...</p>
+    <div id="loadErrorBox" style="display:none;margin-top:14px;">
+      <button type="button" class="start-btn" onclick="location.reload()"><span class="jp">再試行 ▶</span><span class="bn">আবার চেষ্টা করো</span></button>
     </div>
-
-    <button class="login-btn" id="login-btn" onclick="attemptLogin()">&#8618; Login</button>
-    <div class="error-box" id="error-box"></div>
   </div>
 </div>
 
-<!-- ================= COUNTDOWN SCREEN ================= -->
-<div id="countdown-screen" class="screen">
-  <div class="countdown-number" id="countdown-number">10</div>
-  <div class="countdown-msg">JFT mock test questions upload হচ্ছে...<br>অনুগ্রহ করে অপেক্ষা করুন</div>
-</div>
+<div class="app" id="examApp" style="display:none;">
 
-<!-- ================= EXAM SCREEN ================= -->
-<div id="exam-screen" class="screen">
-  <div class="top-bar">
-    <div class="top-left">
-      <div>Question: <b id="q-number">1</b></div>
-      <div>Section: <b>Script and Vocabulary</b></div>
+  <header>
+    <div class="brand">
+      <div class="logo">🎓</div>
+      <div class="brand-text">
+        <div class="title">JFT MOCK TEST</div>
+        <div class="sub">Japanese Language Test</div>
+      </div>
     </div>
-    <div class="top-center">
-      &#9200; Section Time Remaining<br>
-      <span class="timer-val" id="timer-display">00:10:00</span>
+    <div class="timer-box">
+      <div class="timer-label">⏱ Total Time Remaining</div>
+      <div class="timer-value" id="timerDisplay">--:--</div>
     </div>
-    <button class="finish-btn" onclick="finishSection()">Finish Section</button>
-  </div>
-  <div class="test-bar">
-    <div>Test: Japan Foundation Test for Basic Japanese</div>
-    <div>Candidate: USER mygration</div>
-  </div>
-  <div class="exam-body">
+    <div class="cand-box">
+      Candidate ID:<br><span class="id" id="candId">---</span>
+    </div>
+    <button class="finish-btn" onclick="openFinishModal()">■ Finish Test</button>
+  </header>
+
+  <div class="body-wrap">
     <div class="sidebar">
-      <div class="side-tab">Intro</div>
-      <div class="side-tab-block active-section"></div>
-      <div class="q-num-list" id="q-num-list"></div>
-      <div class="side-tab">List...</div>
-      <div class="side-tab-block inactive-section"></div>
-      <div class="side-tab">Rea...</div>
-      <div class="side-tab-block inactive-section"></div>
-    </div>
-    <div class="main-area">
-      <div class="instruction-bar" id="instruction-bar">Look at the illustration and choose the correct word.</div>
-      <div class="question-content">
-        <div class="lang-buttons">
-          <button class="lang-btn" onclick="toggleLang1()">&#128444; Your Language 1 &#8599;</button>
-          <button class="lang-btn disabled" onclick="return false;">&#128444; Your Language 2 &#8599;</button>
-        </div>
-        <div class="translation-box" id="translation-box"></div>
-        <div class="illustration-wrap" id="illustration-wrap"></div>
-        <div id="fill-sentence-wrap"></div>
-        <div class="options" id="options-wrap"></div>
+      <div class="qgrid">
+        <div class="qnums" id="qnums"></div>
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      </div>
+      <div class="sections">
+        <button class="sec-btn sec-vocab active" onclick="jumpSection('vocab')">📕 Vocabulary</button>
+        <button class="sec-btn sec-conv" onclick="jumpSection('conv')">💬 Experience and conversation</button>
+        <button class="sec-btn sec-listen" onclick="jumpSection('listen')">🎧 Listening</button>
+        <button class="sec-btn sec-read" onclick="jumpSection('read')">📖 Reading</button>
       </div>
     </div>
+
+    <main>
+      <div class="qhead">
+        <div class="qbadge" id="qBadge">1</div>
+        <div class="instruction" id="instructionText"></div>
+      </div>
+
+      <div class="lang-row">
+        <button class="lang-btn" id="lang1Btn" onclick="toggleLang(1)">📘 Language 1</button>
+        <button class="lang-btn" id="lang2Btn" onclick="toggleLang(2)">📗 Language 2</button>
+      </div>
+      <div class="translation-box" id="translationBox"></div>
+
+      <div class="content-area" id="contentArea"></div>
+
+      <div class="reading-wrap" id="readingWrap" style="display:none;">
+        <div class="passage-col" id="passageArea"></div>
+        <div class="question-col">
+          <div class="q-block" id="qBlock"></div>
+          <div class="options" id="optionsAreaReading"></div>
+        </div>
+      </div>
+
+      <div class="options" id="optionsArea"></div>
+
+      <div class="nav-row">
+        <button class="nav-btn" id="backBtn" onclick="goBack()">‹ Back</button>
+        <button class="nav-btn" id="nextBtn" onclick="goNext()">Next ›</button>
+      </div>
+    </main>
   </div>
-  <div class="bottom-bar">
-    <div class="bottom-left">&#9881; &#9638;</div>
-    <div class="bottom-right">
-      <button class="flag-btn" id="flag-btn" onclick="toggleFlag()">&#9873; Flag</button>
-      <button class="nav-btn" id="back-btn" onclick="goBack()">&lt; Back</button>
-      <button class="nav-btn" id="next-btn" onclick="goNext()">Next &gt;</button>
+</div>
+
+<div class="modal-overlay" id="finishModal">
+  <div class="modal-box">
+    <h2>Finish Test?</h2>
+    <p>Test শেষ করলে আর উত্তর পরিবর্তন করা যাবে না।</p>
+    <div class="modal-actions">
+      <button class="modal-btn cancel" onclick="closeFinishModal()">বাতিল</button>
+      <button class="modal-btn confirm" onclick="startFinishCountdown()">হ্যাঁ, শেষ করো</button>
     </div>
   </div>
 </div>
 
-<!-- ================= RESULT SCREEN ================= -->
-<div id="result-screen" class="screen">
-  <div class="result-container">
-    <div class="result-row">
-      <div class="result-info">
-        <table>
-          <tr><td><span class="label-jp">受験番号</span><span class="label-en">Registration Number</span></td><td id="res-regno">: 20260706001</td></tr>
-          <tr><td><span class="label-jp">氏名</span><span class="label-en">Name</span></td><td>: USER MYGRATION</td></tr>
-          <tr><td><span class="label-jp">受験日</span><span class="label-en">Test Date</span></td><td id="res-date">: 2026/07/06</td></tr>
-        </table>
-      </div>
-    </div>
-
-    <div class="result-msg">
-      試験の結果をお知らせします。<br>
-      Your test results are as follows.
-    </div>
-
-    <div class="score-block">
-      <div class="score-title" id="score-title">総合得点：0 点</div>
-      <div class="score-sub">（得点範囲：10 - 250 点） 判定基準点：200 点<br>Total Score (Range of Scores: 10-250 points, Passing Score: 200 points)</div>
-
-      <div class="score-bar-wrap">
-        <div class="pass-mark-line" style="left:79.2%;"></div>
-        <div class="score-bar-track"></div>
-        <div class="score-dot" id="score-dot" style="left:0%;">
-          <div class="score-dot-val" id="score-dot-val">0</div>
-        </div>
-      </div>
-      <div class="score-bar-labels"><span>10</span><span>200</span><span>250</span></div>
-
-      <div id="verdict-wrap"></div>
-    </div>
-
-    <div class="result-msg">
-      セクション毎の正答率は次のとおりです。<br>
-      The percentage of correct answers for each section are as follows.
-    </div>
-
-    <div class="section-row">
-      <div class="section-title">文字と語彙 <span style="color:#666;font-size:12px;">Script and Vocabulary</span></div>
-      <div class="section-pct" id="sec-pct">0%</div>
-      <div class="section-bar-track">
-        <div class="section-dot" id="sec-dot" style="left:0%;"></div>
-      </div>
-    </div>
-
-    <button class="retry-btn" onclick="restartExam()">আবার পরীক্ষা দিন (Retry)</button>
+<div class="modal-overlay" id="countdownModal">
+  <div class="modal-box">
+    <h2>Submitting Test...</h2>
+    <div class="countdown-num" id="countdownNum">10</div>
+    <p>অনুগ্রহ করে অপেক্ষা করুন</p>
   </div>
 </div>
+
+<div class="result-page" id="resultPage">
+  <header class="result-header">
+    <div>
+      <div class="result-title">JFT MOCK TEST</div>
+      <div class="result-sub">Practice Test</div>
+    </div>
+    <div class="practice-banner">⚠️ Practice Only – Not an Official JFT Exam</div>
+    <div class="result-actions">
+      <button class="raction-btn print-btn" onclick="window.print()">🖶 Print</button>
+      <button class="raction-btn pdf-btn" onclick="downloadPdf()">⬇ Download PDF</button>
+      <button class="raction-btn exit-btn" onclick="exitResult()">⏻ Exit</button>
+    </div>
+  </header>
+
+  <div class="result-body" id="resultBody">
+    <div class="result-grid-top">
+      <div class="rcard cand-card">
+        <h3>👤 Candidate Information</h3>
+        <div class="cand-row">
+          <div class="cand-photo" id="candPhotoBox">👤</div>
+          <div class="cand-fields" id="candFields"></div>
+        </div>
+      </div>
+      <div class="rcard overall-card">
+        <h3>📊 Overall Result</h3>
+        <div class="overall-inner">
+          <div>
+            <div class="overall-label">Total Score</div>
+            <div class="overall-score" id="scoreDisplay">--<span>/250</span></div>
+          </div>
+          <div>
+            <div class="overall-label">Result</div>
+            <div id="passFailDisplay"></div>
+          </div>
+        </div>
+        <div class="gauge-wrap">
+          <div class="gauge-caption">Score Range: 10 – 250</div>
+          <div class="gauge-track"><div class="gauge-marker" id="gaugeMarker"><span id="gaugeScoreLabel"></span></div></div>
+          <div class="gauge-ticks"><span>10</span><span>200</span><span>250</span></div>
+          <div class="gauge-pass-label">Passing Score: 200</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rcard section-card">
+      <h3>📈 Sectional Performance</h3>
+      <div class="section-grid" id="sectionScores"></div>
+    </div>
+
+    <div class="rcard perf-card">
+      <h3>⭐ About Your Performance</h3>
+      <div id="perfText"></div>
+      <p class="result-disclaimer">※ এটা একটা mock test result। এটা official JFT certificate না।</p>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <script>
-/* ============= DATA ============= */
-const questions = [
-  {
-    instructionEn: "Look at the illustration and choose the correct word.",
-    instructionBn: "ছবিটি দেখুন এবং সঠিক শব্দটি বেছে নিন।",
-    illustration: 'tea',
-    options: ["いれます", "はいります", "います"],
-    answer: 0
-  },
-  {
-    instructionEn: "Look at the illustration and choose the correct word.",
-    instructionBn: "ছবিটি দেখুন এবং সঠিক শব্দটি বেছে নিন।",
-    illustration: 'travel',
-    options: ["料理をします", "理由をします", "旅行をします"],
-    answer: 2
-  },
-  {
-    instructionEn: "Look at the illustration and choose the correct word.",
-    instructionBn: "ছবিটি দেখুন এবং সঠিক শব্দটি বেছে নিন।",
-    illustration: 'shower',
-    options: ["おふろにはいります", "シャワーをあそびます", "シャワーをあびます"],
-    answer: 2
-  },
-  {
-    instructionEn: "Read the sentence and choose the word that fits in ( ) most.",
-    instructionBn: "বাক্যটি পড়ুন এবং ( ) এর মধ্যে সবচেয়ে উপযুক্ত শব্দটি বেছে নিন।",
-    illustration: null,
-    fillSentence: "はこにリンゴが（　　）ありますか。",
-    options: ["なんご", "なんこう", "なんこ"],
-    answer: 2
-  }
-];
 
-const illustrations = {
-  tea: `<svg width="320" height="220" viewBox="0 0 320 220"><rect width="320" height="220" fill="#2fa7b8" rx="10"/><ellipse cx="160" cy="150" rx="55" ry="18" fill="#fff"/><rect x="120" y="110" width="80" height="45" rx="6" fill="#fff"/><path d="M200 118 q25 5 25 20 q0 15 -25 15" stroke="#fff" stroke-width="6" fill="none"/><rect x="60" y="70" width="70" height="12" rx="4" fill="#f4b942" transform="rotate(-20 95 76)"/><circle cx="145" cy="95" r="6" fill="#f4b942"/><circle cx="150" cy="90" r="4" fill="#f4b942"/></svg>`,
-  travel: `<svg width="320" height="220" viewBox="0 0 320 220"><rect width="320" height="220" fill="#eef3f7" rx="10"/><circle cx="160" cy="170" r="70" fill="#6fbf73"/><circle cx="240" cy="50" r="24" fill="#f4d35e"/><circle cx="80" cy="60" r="16" fill="#dfe9f0"/><circle cx="120" cy="40" r="20" fill="#dfe9f0"/><rect x="185" y="110" width="26" height="34" rx="4" fill="#1c3d6e"/><circle cx="165" cy="95" r="14" fill="#f2c199"/><rect x="150" y="108" width="30" height="40" rx="6" fill="#2f6fb2"/></svg>`,
-  shower: `<svg width="320" height="220" viewBox="0 0 320 220"><rect width="320" height="220" fill="#eaf6fb" rx="10"/><ellipse cx="160" cy="150" rx="90" ry="60" fill="#3fa9d6"/><rect x="200" y="20" width="8" height="80" fill="#888"/><circle cx="204" cy="18" r="10" fill="#aaa"/><circle cx="150" cy="120" r="30" fill="#f4c9a0"/><rect x="130" y="145" width="45" height="55" rx="10" fill="#fff"/><circle cx="140" cy="55" r="4" fill="#fff"/><circle cx="155" cy="60" r="4" fill="#fff"/><circle cx="170" cy="50" r="4" fill="#fff"/></svg>`
+/* ================= SERVER CONFIG & SESSION ================= */
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzoVENO6ArlVOtfv_xXjY7-45SaYl5gWBonjMqBJ0jOCm8iaJ4TQ88js7G5BwpSd_gM/exec";
+const CATEGORY = "JFT Basic";
+
+const studentId = sessionStorage.getItem('studentId') || '';
+const rowIndex  = sessionStorage.getItem('rowIndex') || '';
+
+let candidateInfo = {
+  name: sessionStorage.getItem('candidateName') || '',
+  dob: sessionStorage.getItem('candidateDOB') || '',
+  gender: sessionStorage.getItem('candidateGender') || '',
+  testDate: sessionStorage.getItem('examDate') || '',
+  photo: sessionStorage.getItem('candidatePhotoUrl') || sessionStorage.getItem('candidatePhoto') || null
 };
 
-let currentQ = 0;
-let userAnswers = new Array(questions.length).fill(null);
-let flagged = new Array(questions.length).fill(false);
-let langOn = false;
-let loginAttempts = 0;
-let examTimerInterval = null;
-let totalSeconds = 10 * 60; // 10 minutes
-let locked = false;
+const sectionMeta = {
+  vocab:{label:'Vocabulary', cls:'sec-vocab'},
+  conv:{label:'Experience and conversation', cls:'sec-conv'},
+  listen:{label:'Listening', cls:'sec-listen'},
+  read:{label:'Reading', cls:'sec-read'}
+};
 
-/* ============= LOGIN ============= */
-function attemptLogin() {
-  if (locked) return;
-  const id = document.getElementById('id-input').value.trim();
-  const pw = document.getElementById('pw-input').value.trim();
-  const errorBox = document.getElementById('error-box');
+/* Populated after a successful getQuestions call */
+let questions = [];
+let sectionRanges = {};
+let current = 0;
+let answers = [];
+let currentLang = 0;
+let playCounts = [];
+let sectionLastIndex = {};
 
-  if (id.length > 0 && pw.length > 0) {
-    errorBox.style.display = 'none';
-    startCountdown();
-  } else {
-    loginAttempts++;
-    if (loginAttempts > 3) {
-      locked = true;
-      errorBox.style.display = 'block';
-      errorBox.innerHTML = 'আপনি ৩ বারের বেশি ভুল ID/Password ব্যবহার করেছেন, এই কারণে আপনি আর JFT mock test দিতে পারবেন না।';
-      document.getElementById('login-btn').disabled = true;
-    } else {
-      errorBox.style.display = 'block';
-      errorBox.innerHTML = 'ID Number অথবা Password ভুল। আবার চেষ্টা করুন। (' + loginAttempts + '/3)';
-    }
+function showLoadError(msg){
+  document.getElementById('loadingLogo').textContent = '\u26a0\ufe0f';
+  document.getElementById('loadingMsg').textContent = msg;
+  document.getElementById('loadErrorBox').style.display = 'block';
+}
+
+/* ================= FETCH QUESTIONS (secure - no answer key ever sent) ================= */
+function fetchQuestions(){
+  if(!studentId || !rowIndex){
+    showLoadError('Login তথ্য পাওয়া যায়নি। অনুগ্রহ করে আবার Login করো।');
+    return;
   }
-}
-
-function startCountdown() {
-  document.getElementById('login-screen').classList.remove('active');
-  document.getElementById('countdown-screen').classList.add('active');
-  let count = 10;
-  const numEl = document.getElementById('countdown-number');
-  numEl.textContent = count;
-  const interval = setInterval(() => {
-    count--;
-    numEl.textContent = count;
-    if (count <= 0) {
-      clearInterval(interval);
-      document.getElementById('countdown-screen').classList.remove('active');
-      startExam();
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    body: JSON.stringify({ action:"getQuestions", category: CATEGORY })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if(!data.success || !data.questions || !data.questions.length){
+      showLoadError('প্রশ্ন লোড করতে সমস্যা হয়েছে। আবার চেষ্টা করো।');
+      return;
     }
-  }, 1000);
+    questions = data.questions;
+    answers = new Array(questions.length).fill(null);
+    playCounts = new Array(questions.length).fill(0);
+
+    let offset = 0;
+    ['vocab','conv','listen','read'].forEach(function(sec){
+      const len = questions.filter(function(q){ return q.section===sec; }).length;
+      sectionRanges[sec] = {start:offset, end:offset+len};
+      offset += len;
+    });
+    sectionLastIndex = {vocab:sectionRanges.vocab.start, conv:sectionRanges.conv.start, listen:sectionRanges.listen.start, read:sectionRanges.read.start};
+
+    document.getElementById('startScreen').style.display = 'none';
+    document.getElementById('candId').textContent = studentId;
+    document.getElementById('examApp').style.display = 'flex';
+    init();
+  })
+  .catch(function(err){
+    console.error(err);
+    showLoadError('সার্ভারের সাথে সংযোগ করতে সমস্যা হয়েছে। আবার চেষ্টা করো।');
+  });
 }
 
-/* ============= EXAM ============= */
-function startExam() {
-  document.getElementById('exam-screen').classList.add('active');
-  buildQNumList();
+
+function sectionOf(i){
+  for(const sec in sectionRanges){
+    if(i>=sectionRanges[sec].start && i<sectionRanges[sec].end) return sec;
+  }
+  return 'vocab';
+}
+
+/* ================= INIT ================= */
+function init(){
+  buildSidebarNums();
   renderQuestion();
-  startTimer();
+  startTimer(60*60); // 1 hour total
 }
 
-function buildQNumList() {
-  const wrap = document.getElementById('q-num-list');
+function buildSidebarNums(){
+  const wrap = document.getElementById('qnums');
   wrap.innerHTML = '';
-  questions.forEach((q, i) => {
-    const div = document.createElement('div');
-    div.className = 'q-num ' + getQClass(i);
-    div.textContent = i + 1;
-    div.onclick = () => { currentQ = i; renderQuestion(); };
-    wrap.appendChild(div);
-  });
-}
-
-function getQClass(i) {
-  let cls = '';
-  if (i === currentQ) cls = 'current';
-  else if (userAnswers[i] !== null) cls = 'answered';
-  else cls = 'unanswered';
-  if (flagged[i]) cls += ' flagged';
-  return cls;
-}
-
-function refreshQNumList() {
-  const wrap = document.getElementById('q-num-list');
-  [...wrap.children].forEach((div, i) => {
-    div.className = 'q-num ' + getQClass(i);
-  });
-}
-
-function renderQuestion() {
-  const q = questions[currentQ];
-  document.getElementById('q-number').textContent = currentQ + 1;
-  document.getElementById('instruction-bar').textContent = q.instructionEn;
-  document.getElementById('translation-box').style.display = 'none';
-  document.getElementById('translation-box').textContent = '';
-  langOn = false;
-
-  const illWrap = document.getElementById('illustration-wrap');
-  const fillWrap = document.getElementById('fill-sentence-wrap');
-  illWrap.innerHTML = '';
-  fillWrap.innerHTML = '';
-
-  if (q.illustration) {
-    illWrap.innerHTML = illustrations[q.illustration];
+  const sec = sectionOf(current);
+  wrap.className = 'qnums sec-color-'+sec;
+  const range = sectionRanges[sec];
+  for(let i=range.start;i<range.end;i++){
+    const d = document.createElement('div');
+    d.className = 'qnum';
+    d.textContent = (i-range.start)+1;
+    d.id = 'qnum-'+i;
+    d.onclick = (function(idx){ return function(){ current = idx; sectionLastIndex[sectionOf(idx)]=idx; renderQuestion(); }; })(i);
+    wrap.appendChild(d);
   }
-  if (q.fillSentence) {
-    fillWrap.innerHTML = '<div class="fill-sentence">' + q.fillSentence + '</div>';
-  }
-
-  const optWrap = document.getElementById('options-wrap');
-  optWrap.innerHTML = '';
-  q.options.forEach((opt, i) => {
-    const div = document.createElement('div');
-    div.className = 'option' + (userAnswers[currentQ] === i ? ' selected' : '');
-    div.innerHTML = '<span>' + (i + 1) + '.</span><span>' + opt + '</span>';
-    div.onclick = () => selectOption(i);
-    optWrap.appendChild(div);
-  });
-
-  document.getElementById('back-btn').disabled = (currentQ === 0);
-  document.getElementById('next-btn').textContent = (currentQ === questions.length - 1) ? 'Submit' : 'Next >';
-
-  const flagBtn = document.getElementById('flag-btn');
-  flagBtn.classList.toggle('flag-active', flagged[currentQ]);
-
-  refreshQNumList();
+  updateSidebarStates();
 }
 
-function selectOption(i) {
-  userAnswers[currentQ] = i;
+function updateSidebarStates(){
+  const sec = sectionOf(current);
+  const range = sectionRanges[sec];
+  for(let i=range.start;i<range.end;i++){
+    const el = document.getElementById('qnum-'+i);
+    if(!el) continue;
+    el.classList.toggle('current', i===current);
+    el.classList.toggle('answered', answers[i]!==null);
+  }
+  const answeredInSection = answers.slice(range.start, range.end).filter(a=>a!==null).length;
+  const pct = Math.round((answeredInSection/(range.end-range.start))*100);
+  document.getElementById('progressFill').style.height = pct+'%';
+
+  document.querySelectorAll('.sec-btn').forEach(btn=>btn.classList.remove('active'));
+  document.querySelector('.'+sectionMeta[sec].cls).classList.add('active');
+}
+
+/* ================= SECTION JUMP ================= */
+function jumpSection(sec){
+  current = sectionLastIndex[sec];
+  buildSidebarNums();
   renderQuestion();
 }
 
-function toggleLang1() {
-  langOn = !langOn;
-  const box = document.getElementById('translation-box');
-  if (langOn) {
-    box.style.display = 'block';
-    box.textContent = questions[currentQ].instructionBn;
-  } else {
-    box.style.display = 'none';
-  }
-}
+/* ================= RENDER ================= */
+function renderQuestion(){
+  window.scrollTo(0,0);
+  document.querySelector('main').scrollTop = 0;
+  const q = questions[current];
+  const sec = q.section;
+  const range = sectionRanges[sec];
+  const numInSection = (current-range.start)+1;
 
-function toggleFlag() {
-  flagged[currentQ] = !flagged[currentQ];
-  renderQuestion();
-}
+  document.getElementById('qBadge').textContent = numInSection;
+  document.getElementById('instructionText').textContent = q.instruction;
+  currentLang = 0;
+  document.getElementById('translationBox').classList.remove('show');
+  document.getElementById('lang1Btn').classList.remove('on');
+  document.getElementById('lang2Btn').classList.remove('on');
 
-function goBack() {
-  if (currentQ > 0) {
-    currentQ--;
-    renderQuestion();
-  }
-}
+  const content = document.getElementById('contentArea');
+  const readingWrap = document.getElementById('readingWrap');
+  const optionsArea = document.getElementById('optionsArea');
+  const optionsAreaReading = document.getElementById('optionsAreaReading');
 
-function goNext() {
-  if (currentQ < questions.length - 1) {
-    currentQ++;
-    renderQuestion();
-  } else {
-    finishSection();
-  }
-}
+  content.innerHTML = '';
+  content.style.display = 'block';
+  readingWrap.style.display = 'none';
+  optionsArea.style.display = 'flex';
+  optionsArea.innerHTML = '';
+  optionsAreaReading.innerHTML = '';
 
-function startTimer() {
-  updateTimerDisplay();
-  examTimerInterval = setInterval(() => {
-    totalSeconds--;
-    updateTimerDisplay();
-    if (totalSeconds <= 0) {
-      clearInterval(examTimerInterval);
-      finishSection();
+  if(sec === 'vocab'){
+    if(q.type === 'illustration'){
+      content.innerHTML = '<div class="illustration-wrap"><div class="illustration-box"><span class="emoji-icon">'+(q.icon||'')+'</span></div></div>';
+    } else {
+      /* 'sentence' and 'kanji' both render as HTML text (kanji rows contain <u>..</u> tags) */
+      content.innerHTML = '<div class="sentence-box">'+(q.mainText||'')+'</div>';
     }
-  }, 1000);
-}
+    renderOptions(q, optionsArea, false);
 
-function updateTimerDisplay() {
-  const h = Math.floor(totalSeconds / 3600).toString().padStart(2, '0');
-  const m = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2, '0');
-  const s = Math.floor(totalSeconds % 60).toString().padStart(2, '0');
-  document.getElementById('timer-display').textContent = `${h}:${m}:${s}`;
-}
+  } else if(sec === 'conv'){
+    /* mainText format: "A: ... | B: ..." — split into speaker lines */
+    let dialogHtml = '<div class="dialog-wrap">';
+    (q.mainText||'').split(' | ').forEach(function(part){
+      const m = part.match(/^([A-Za-z]{1,2})[:：]\s*(.*)$/);
+      const speaker = m ? m[1] : '';
+      let text = m ? m[2] : part;
+      text = text.replace(/_{2,}/g, '<span class="blank-box">\u3000\u3000</span>');
+      dialogHtml += '<div class="dialog-line">'+(speaker ? '<div class="speaker">'+speaker+'\uff1a</div>' : '')+'<div>'+text+'</div></div>';
+    });
+    dialogHtml += '</div>';
+    content.innerHTML += dialogHtml;
+    renderOptions(q, optionsArea, true);
 
-function finishSection() {
-  if (examTimerInterval) clearInterval(examTimerInterval);
-  document.getElementById('exam-screen').classList.remove('active');
-  showResult();
-}
+  } else if(sec === 'listen'){
+    content.innerHTML =
+      '<div class="audio-wrap">'+
+        '<button class="audio-btn" id="audioBtn" onclick="playAudio()">'+
+          '<svg viewBox="0 0 100 100" width="36" height="36">'+
+            '<polygon points="20,35 40,35 60,15 60,85 40,65 20,65" fill="#fff"/>'+
+            '<path id="wave1" d="M68 30 Q80 50 68 70" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round"/>'+
+            '<path id="wave2" d="M78 20 Q96 50 78 80" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round" opacity="0.7"/>'+
+          '</svg>'+
+        '</button>'+
+        '<div class="audio-hint" id="audioHint">\u30bf\u30c3\u30d7\u3057\u3066\u3000\u97f3\u58f0\u3092\u3000\u8074\u3044\u3066\u304f\u3060\u3055\u3044</div>'+
+        '<div class="audio-count" id="playCount">'+playCounts[current]+'\u56de\u3000\u8074\u304d\u307e\u3057\u305f</div>'+
+      '</div>';
+    renderOptions(q, optionsArea, false);
 
-/* ============= RESULT ============= */
-function showResult() {
-  let correct = 0;
-  questions.forEach((q, i) => { if (userAnswers[i] === q.answer) correct++; });
-  const pct = correct / questions.length;
-  const score = Math.round(pct * 250);
-  const displayScore = Math.max(score, 10);
-
-  document.getElementById('score-title').textContent = '総合得点：' + displayScore + ' 点';
-
-  const barPct = ((displayScore - 10) / (250 - 10)) * 100;
-  document.getElementById('score-dot').style.left = barPct + '%';
-  document.getElementById('score-dot-val').textContent = displayScore;
-
-  const verdictWrap = document.getElementById('verdict-wrap');
-  if (displayScore >= 200) {
-    verdictWrap.innerHTML = '<div class="verdict-badge verdict-pass">合格 PASS</div>' +
-      '<div>あなたは国際交流基金日本語基礎テストにおいて、ある程度日常会話ができ、生活に支障がない程度の日本語能力水準に達していると判定されました。<br>' +
-      'You were assessed to have reached a level of Japanese language proficiency in Japan Foundation Test for Basic Japanese to be able to engage in everyday conversation to a certain extent and without difficulties in daily life.</div>';
-  } else {
-    verdictWrap.innerHTML = '<div class="verdict-badge verdict-fail">不合格 FAIL</div>' +
-      '<div>残念ながら、合格基準点に達しませんでした。<br>Unfortunately, you did not reach the passing score for this test.</div>';
+  } else if(sec === 'read'){
+    content.style.display = 'none';
+    optionsArea.style.display = 'none';
+    readingWrap.style.display = 'flex';
+    document.getElementById('passageArea').innerHTML = '<div class="passage-box">'+(q.passage||'').split('\n').join('<br>')+'</div>';
+    document.getElementById('qBlock').textContent = q.mainText||'';
+    renderOptions(q, optionsAreaReading, false);
   }
 
-  const secPct = Math.round(pct * 100);
-  document.getElementById('sec-pct').textContent = secPct + '%';
-  document.getElementById('sec-dot').style.left = secPct + '%';
-
-  document.getElementById('result-screen').classList.add('active');
+  document.getElementById('backBtn').disabled = current===0;
+  document.getElementById('nextBtn').textContent = current===questions.length-1 ? 'Finish \u2713' : 'Next \u203a';
+  updateSidebarStates();
 }
 
-function restartExam() {
-  currentQ = 0;
-  userAnswers = new Array(questions.length).fill(null);
-  flagged = new Array(questions.length).fill(false);
-  totalSeconds = 10 * 60;
-  loginAttempts = 0;
-  locked = false;
-  document.getElementById('id-input').value = '';
-  document.getElementById('pw-input').value = '';
-  document.getElementById('login-btn').disabled = false;
-  document.getElementById('error-box').style.display = 'none';
-  document.getElementById('result-screen').classList.remove('active');
-  document.getElementById('login-screen').classList.add('active');
+function renderOptions(q, wrap, numbered){
+  q.options.forEach((opt,i)=>{
+    const el = document.createElement('div');
+    el.className = 'opt o'+i;
+    if(answers[current]===i) el.classList.add('selected');
+    el.innerHTML = '<div class="dot"></div><div>'+(numbered ? (i+1)+'. ' : '')+opt+'</div>';
+    el.onclick = (function(idx){ return function(){ selectOption(idx); }; })(i);
+    wrap.appendChild(el);
+  });
 }
+
+function selectOption(i){
+  answers[current] = i;
+  renderQuestion();
+}
+
+function goNext(){
+  if(current < questions.length-1){
+    const prevSec = sectionOf(current);
+    current++;
+    const sec = sectionOf(current);
+    sectionLastIndex[sec] = current;
+    if(sec !== prevSec) buildSidebarNums();
+    renderQuestion();
+  } else {
+    openFinishModal();
+  }
+}
+function goBack(){
+  if(current>0){
+    const prevSec = sectionOf(current);
+    current--;
+    const sec = sectionOf(current);
+    sectionLastIndex[sec] = current;
+    if(sec !== prevSec) buildSidebarNums();
+    renderQuestion();
+  }
+}
+
+/* ================= LANGUAGE TOGGLE ================= */
+function toggleLang(n){
+  const q = questions[current];
+  const box = document.getElementById('translationBox');
+  if(currentLang === n){
+    currentLang = 0;
+    box.classList.remove('show');
+    document.getElementById('lang1Btn').classList.remove('on');
+    document.getElementById('lang2Btn').classList.remove('on');
+    return;
+  }
+  currentLang = n;
+  document.getElementById('lang1Btn').classList.toggle('on', n===1);
+  document.getElementById('lang2Btn').classList.toggle('on', n===2);
+  box.textContent = n===1 ? q.instructionBn : q.instruction;
+  box.classList.add('show');
+}
+
+/* ================= AUDIO (Text-to-Speech) - Listening section ================= */
+let availableVoices = [];
+function loadVoices(){
+  availableVoices = window.speechSynthesis.getVoices();
+}
+if('speechSynthesis' in window){
+  loadVoices();
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+}
+function pickJapaneseVoice(){
+  let v = availableVoices.find(v=> v.lang === 'ja-JP');
+  if(!v) v = availableVoices.find(v=> v.lang && v.lang.toLowerCase().startsWith('ja'));
+  return v || null;
+}
+function speakNow(text, btn){
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'ja-JP';
+  const jaVoice = pickJapaneseVoice();
+  if(jaVoice) utter.voice = jaVoice;
+  utter.rate = 0.85;
+  btn.classList.add('playing');
+  let started = false;
+  utter.onstart = ()=> { started = true; };
+  utter.onend = ()=> btn.classList.remove('playing');
+  utter.onerror = ()=> { btn.classList.remove('playing'); showAudioHelp(); };
+  window.speechSynthesis.speak(utter);
+  setTimeout(()=>{
+    if(!started){ btn.classList.remove('playing'); showAudioHelp(); }
+  }, 1200);
+}
+function showAudioHelp(){
+  alert(
+    'Audio \u099a\u09be\u09b2\u09be\u09a8\u09cb \u09af\u09be\u099a\u09cd\u099b\u09c7 \u09a8\u09be\u0964\n\n' +
+    '\u09e7. \u098f\u0987 \u09ab\u09be\u0987\u09b2\u099f\u09be \u09b8\u09b0\u09be\u09b8\u09b0\u09bf Chrome \u09ac\u09cd\u09b0\u09be\u0989\u099c\u09be\u09b0\u09c7 \u0996\u09cb\u09b2\u09cb (\u0985\u09a8\u09cd\u09af \u0995\u09cb\u09a8\u09cb app \u098f\u09b0 \u09ad\u09c7\u09a4\u09b0\u09c7\u09b0 preview/browser \u09a5\u09c7\u0995\u09c7 \u09a8\u09be)\u0964\n' +
+    '\u09e8. \u09ab\u09cb\u09a8\u09c7\u09b0 Settings > System > Languages > Text-to-speech output \u098f \u0997\u09bf\u09df\u09c7 "Japanese" \u09ad\u09be\u09b7\u09be download \u0995\u09b0\u09be \u0986\u099b\u09c7 \u0995\u09bf\u09a8\u09be \u09a6\u09c7\u0996\u09cb\u0964\n' +
+    '\u09e9. \u09a4\u09be\u09b0\u09aa\u09b0 \u0986\u09ac\u09be\u09b0 \u09ac\u09be\u099f\u09a8\u09c7 \u0995\u09cd\u09b2\u09bf\u0995 \u0995\u09b0\u09cb\u0964'
+  );
+}
+function playAudio(){
+  const q = questions[current];
+  const btn = document.getElementById('audioBtn');
+  if(!('speechSynthesis' in window)){
+    alert('\u098f\u0987 \u09ac\u09cd\u09b0\u09be\u0989\u099c\u09be\u09b0\u09c7 audio \u09b8\u09be\u09aa\u09cb\u09b0\u09cd\u099f \u09a8\u09c7\u0987\u0964 Chrome \u09ac\u09cd\u09af\u09ac\u09b9\u09be\u09b0 \u0995\u09b0\u09cb\u0964');
+    return;
+  }
+  loadVoices();
+  if(!pickJapaneseVoice()){
+    setTimeout(()=>{ loadVoices(); speakNow(q.mainText, btn); }, 300);
+  } else {
+    speakNow(q.mainText, btn);
+  }
+  playCounts[current]++;
+  const pc = document.getElementById('playCount');
+  if(pc) pc.textContent = playCounts[current]+'\u56de\u3000\u8074\u304d\u307e\u3057\u305f';
+}
+
+/* ================= TIMER ================= */
+function playFinishSound(){
+  try{
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const now = ctx.currentTime;
+    [0,0.18,0.36].forEach((offset,i)=>{
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = i<2 ? 880 : 1175;
+      gain.gain.setValueAtTime(0.0001, now+offset);
+      gain.gain.exponentialRampToValueAtTime(0.3, now+offset+0.02);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now+offset+0.16);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(now+offset);
+      osc.stop(now+offset+0.18);
+    });
+  }catch(e){ /* audio not supported, ignore */ }
+}
+
+let timeLeft;
+function startTimer(seconds){
+  timeLeft = seconds;
+  updateTimerDisplay();
+  window._timerInterval = setInterval(()=>{
+    timeLeft--;
+    updateTimerDisplay();
+    if(timeLeft<=0){
+      clearInterval(window._timerInterval);
+      playFinishSound();
+      openFinishModal(true);
+    }
+  },1000);
+}
+function updateTimerDisplay(){
+  const h = Math.floor(timeLeft/3600);
+  const m = Math.floor((timeLeft%3600)/60).toString().padStart(2,'0');
+  const s = (timeLeft%60).toString().padStart(2,'0');
+  document.getElementById('timerDisplay').textContent = (h>0? h+':' : '')+m+':'+s;
+}
+
+/* ================= FINISH FLOW ================= */
+function openFinishModal(){
+  document.getElementById('finishModal').classList.add('show');
+}
+function closeFinishModal(){
+  document.getElementById('finishModal').classList.remove('show');
+}
+function startFinishCountdown(){
+  closeFinishModal();
+  document.getElementById('countdownModal').classList.add('show');
+
+  /* Kick off the secure server-side scoring right away so it's ready
+     by the time the countdown finishes. The answer key never touches
+     this page — only the final score/result/sectionScores come back. */
+  const payload = {
+    action: "submitAnswers",
+    rowIndex: rowIndex,
+    answers: questions.map(function(q, i){
+      const idx = answers[i];
+      return { questionId: q.questionId, selected: (idx===null||idx===undefined) ? null : String.fromCharCode(65+idx) };
+    })
+  };
+  const submitPromise = fetch(SCRIPT_URL, { method:"POST", body: JSON.stringify(payload) })
+    .then(function(res){ return res.json(); })
+    .catch(function(err){ console.error(err); return { success:false }; });
+
+  let c = 10;
+  document.getElementById('countdownNum').textContent = c;
+  const iv = setInterval(()=>{
+    c--;
+    document.getElementById('countdownNum').textContent = c;
+    if(c<=0){
+      clearInterval(iv);
+      submitPromise.then(function(result){
+        document.getElementById('countdownModal').classList.remove('show');
+        showResult(result);
+      });
+    }
+  },1000);
+}
+const sectionIcons = {
+  vocab:{icon:'📘', label:'Script & Vocabulary', color:'blue'},
+  conv:{icon:'💬', label:'Conversation & Expression', color:'purple'},
+  listen:{icon:'🎧', label:'Listening Comprehension', color:'green'},
+  read:{icon:'📕', label:'Reading Comprehension', color:'red'}
+};
+
+function performanceText(score){
+  if(score>=230){
+    return {
+      jp:'あなたはJFT Mock Testにおいて、日常生活のさまざまな場面で日本語を自信を持って使いこなせる高い能力があると判定されました。',
+      en:'You have demonstrated a strong ability to use Japanese confidently across a wide range of everyday situations.'
+    };
+  } else if(score>=200){
+    return {
+      jp:'あなたはJFT Mock Testにおいて、ある程度日常会話ができ、生活に支障がない程度の日本語能力があると判定されました。',
+      en:'You have demonstrated a level of Japanese language ability that allows you to engage in everyday conversations to a certain extent and live your daily life without major difficulties.'
+    };
+  } else {
+    return {
+      jp:'あなたのスコアはまだ合格基準に達していません。基本的な語彙や表現をもう一度復習し、再挑戦することをおすすめします。',
+      en:'Your score has not yet reached the passing standard. We recommend reviewing basic vocabulary and expressions before your next attempt.'
+    };
+  }
+}
+
+function renderCandidateInfo(){
+  const box = document.getElementById('candPhotoBox');
+  box.innerHTML = candidateInfo.photo
+    ? '<img src="'+candidateInfo.photo+'" alt="candidate">'
+    : '👤';
+
+  const fields = [
+    ['Candidate Name', candidateInfo.name || '---'],
+    ['Date of Birth', (candidateInfo.dob||'---')+' (yyyy/mm/dd)'],
+    ['Gender', candidateInfo.gender || '---'],
+    ['Test Date', candidateInfo.testDate+' (yyyy/mm/dd)'],
+    ['Test Type', 'JFT Basic Mock Test (Full)'],
+    ['Test Mode', 'CBT (Computer Based Test)']
+  ];
+  document.getElementById('candFields').innerHTML = fields.map(f=>
+    '<div class="cfield"><b>'+f[0]+'</b><span>: '+f[1]+'</span></div>'
+  ).join('');
+}
+
+function updateGauge(score){
+  const min=10, max=250;
+  const pct = Math.max(0, Math.min(100, (score-min)/(max-min)*100));
+  document.getElementById('gaugeMarker').style.left = pct+'%';
+  document.getElementById('gaugeScoreLabel').textContent = score;
+}
+
+function showResult(serverResult){
+  playFinishSound();
+
+  if(!serverResult || !serverResult.success){
+    document.getElementById('scoreDisplay').innerHTML = '--<span>/250</span>';
+    document.getElementById('passFailDisplay').innerHTML = '<div class="fail">রেজাল্ট সেভ করতে সমস্যা হয়েছে</div>';
+    document.getElementById('perfText').innerHTML = '<p class="perf-jp">সার্ভারের সাথে সংযোগ করা যায়নি। ইন্টারনেট চেক করে আবার Finish চাপো, অথবা পরে Result পেজ থেকে দেখো।</p>';
+    renderCandidateInfo();
+    document.getElementById('resultPage').classList.add('show');
+    return;
+  }
+
+  const rawScore = serverResult.score;
+  document.getElementById('scoreDisplay').innerHTML = rawScore+'<span>/250</span>';
+  const pf = document.getElementById('passFailDisplay');
+  const passed = serverResult.result === 'Pass';
+  pf.innerHTML = passed ? '<div class="pass">✓ PASSED</div>' : '<div class="fail">✗ FAILED</div>';
+  updateGauge(rawScore);
+  renderCandidateInfo();
+
+  const secScoresEl = document.getElementById('sectionScores');
+  secScoresEl.innerHTML = '';
+  const sectionScores = serverResult.sectionScores || {};
+  Object.keys(sectionIcons).forEach(sec=>{
+    const pct = sectionScores[sec] || 0;
+    const meta = sectionIcons[sec];
+    const card = document.createElement('div');
+    card.className = 'sec-score-card sec-'+meta.color;
+    card.innerHTML =
+      '<div class="sec-icon">'+meta.icon+'</div>'+
+      '<div class="sec-label">'+meta.label+'</div>'+
+      '<div class="sec-bar"><div class="sec-bar-fill" style="width:'+pct+'%"></div></div>'+
+      '<div class="sec-pct">'+pct+'%</div>'+
+      '<div class="sec-frac">(Score: '+pct+'/100)</div>';
+    secScoresEl.appendChild(card);
+  });
+
+  const perf = performanceText(rawScore);
+  document.getElementById('perfText').innerHTML =
+    '<p class="perf-jp">'+perf.jp+'</p><p class="perf-en">'+perf.en+'</p>';
+
+  document.getElementById('resultPage').classList.add('show');
+}
+
+function exitResult(){
+  if(confirm('Test session শেষ করে হোম পেজে ফিরে যেতে চাও?')){
+    sessionStorage.clear();
+    window.location.href = 'home-1.html';
+  }
+}
+
+function downloadPdf(){
+  const el = document.getElementById('resultBody');
+  const opt = {
+    margin: 8,
+    filename: 'JFT_Mock_Result_'+(studentId||'result')+'.pdf',
+    image: { type:'jpeg', quality:0.98 },
+    html2canvas: { scale:2, backgroundColor:'#fff6ea' },
+    jsPDF: { unit:'mm', format:'a4', orientation:'portrait' }
+  };
+  html2pdf().set(opt).from(el).save();
+}
+
+/* ================= PRIVACY GUARDS ================= */
+document.addEventListener('copy', e=> e.preventDefault());
+document.addEventListener('cut', e=> e.preventDefault());
+document.addEventListener('contextmenu', e=> e.preventDefault());
+document.addEventListener('keydown', e=>{
+  if((e.ctrlKey||e.metaKey) && ['c','x','u','s','p'].includes(e.key.toLowerCase())){
+    e.preventDefault();
+  }
+  if(e.key === 'F12') e.preventDefault();
+});
+
+/* Best-effort deterrent: blur content when the tab/app loses focus
+   (app-switch, notification shade, etc). This cannot detect or block
+   OS-level screenshots or screen recording — browsers have no API for that. */
+function triggerBlur(){
+  document.body.classList.add('screen-blur');
+  document.getElementById('focusWarning').classList.add('show');
+}
+function clearBlur(){
+  document.body.classList.remove('screen-blur');
+  document.getElementById('focusWarning').classList.remove('show');
+}
+document.addEventListener('visibilitychange', ()=>{ document.hidden ? triggerBlur() : clearBlur(); });
+window.addEventListener('blur', triggerBlur);
+window.addEventListener('focus', clearBlur);
+document.getElementById('focusWarning').addEventListener('click', clearBlur);
+
+fetchQuestions();
+
 </script>
 </body>
 </html>
